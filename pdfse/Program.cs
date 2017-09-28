@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace PDFService
 {
@@ -13,6 +14,7 @@ namespace PDFService
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseKestrel(options => { options.Listen(IPAddress.Any, 5000); })
                 .Build();
     }
 }
