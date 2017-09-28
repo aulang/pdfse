@@ -1,28 +1,77 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PDFService.Business;
+using System;
 using System.IO;
+using System.Web;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace PDFService.Controllers
 {
     [Route("api/[controller]")]
     public class PdfController : Controller
     {
-        [HttpPost("convert")]
-        public async Task<IActionResult> Post(IFormFile file, bool sign = false, string flag=null)
+        private FileManager Manager;
+
+        private Encoding utf8 = Encoding.UTF8;
+
+        public PdfController(FileManager manager)
         {
-            var fileName = file.FileName;
-            
-            var filePath = Path.GetTempFileName();
+            this.Manager = manager;
+        }
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+        [HttpPost("convert")]
+        public async Task<IActionResult> Convert(IFormFile file, bool sign = false, string flag = null)
+        {
+            try
             {
-                await file.CopyToAsync(stream);
+                var fileName = HttpUtility.UrlDecode(file.FileName, utf8);
+
+                var filePath = Manager.GetInputDocPath(fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                filePath = Manager.Convert(filePath);
+
+                if (sign)
+                {
+                    filePath = Manager.Sign(filePath, flag);
+                }
+
+                return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath));
             }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-            //return PhysicalFile("", "pdf");
+        [HttpPost("sign")]
+        public async Task<IActionResult> Sign(IFormFile file, string flag = null)
+        {
+            try
+            {
+                var fileName = HttpUtility.UrlDecode(file.FileName, utf8);
 
-            return Ok(new { count = file.Length, filePath });
+                var filePath = Manager.GetInputPdfPath(fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                filePath = Manager.Sign(filePath, flag);
+
+                return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }
