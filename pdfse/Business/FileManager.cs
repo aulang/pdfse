@@ -18,7 +18,7 @@ namespace PDFService.Business
         private const string DEFAULTFLAG = "盖章";
         private const string DATEFORMAT = "yyyyMMdd";
 
-        private int count = 0;
+        private static volatile int count = 0;
 
         private StamperManager Stamper;
 
