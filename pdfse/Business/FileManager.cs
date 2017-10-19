@@ -37,6 +37,8 @@ namespace PDFService.Business
 
         private string GetInputFilePath(string fileName, string type)
         {
+            ++count;
+
             String today = DateTime.Now.ToString(DATEFORMAT);
 
             StringBuilder builder = new StringBuilder(Stamper.OutBaseDir);
@@ -46,13 +48,10 @@ namespace PDFService.Business
 
             if (!Directory.Exists(parentDir))
             {
-                ++count;
+                count = 0;
                 Directory.CreateDirectory(parentDir);
             }
-            else
-            {
-                count = 0;
-            }
+
 
             builder.Append(Path.DirectorySeparatorChar).Append(count).Append(fileName);
             return builder.ToString();
