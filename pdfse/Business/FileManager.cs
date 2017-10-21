@@ -1,7 +1,4 @@
-﻿using iText.IO.Image;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.X509;
-using PDFService.Converters;
+﻿using PDFService.Converters;
 using PDFService.Utils;
 using System;
 using System.IO;
