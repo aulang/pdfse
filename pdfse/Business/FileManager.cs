@@ -64,7 +64,7 @@ namespace PDFService.Business
             return GetInputFilePath(fileName, PDF);
         }
 
-        public string getOutputFilePath(string inputPath)
+        public string GetOutputFilePath(string inputPath)
         {
             StringBuilder builder = new StringBuilder(GetParentDirectory(inputPath));
             builder.Append(Path.DirectorySeparatorChar).Append(PDF);
@@ -95,7 +95,7 @@ namespace PDFService.Business
 
         public string Convert(string inputPath)
         {
-            string outputPath = getOutputFilePath(inputPath);
+            string outputPath = GetOutputFilePath(inputPath);
 
             string extension = Path.GetExtension(inputPath);
 
