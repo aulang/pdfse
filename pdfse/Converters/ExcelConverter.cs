@@ -19,11 +19,6 @@ namespace PDFService.Converters
                     throw new ConvertException("File not Exists");
                 }
 
-                //if (IsPasswordProtected(inputFile))
-                //{
-                //    throw new ConvertException("Password Exist");
-                //}
-
                 app = new Excel.Application();
                 book = app.Workbooks.Open(inputFile, false, true, nothing, nothing, nothing, true, nothing, nothing, false, false, nothing, false, nothing, false);
 

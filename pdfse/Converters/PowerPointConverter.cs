@@ -19,11 +19,6 @@ namespace PDFService.Converters
                     throw new ConvertException("File not Exists");
                 }
 
-                //if (IsPasswordProtected(inputFile))
-                //{
-                //    throw new ConvertException("Password Exist");
-                //}
-
                 app = new PowerPoint.Application();
                 presentation = app.Presentations.Open(inputFile, MsoTriState.msoTrue, MsoTriState.msoFalse, MsoTriState.msoFalse);
                 presentation.ExportAsFixedFormat(outputFile, PowerPoint.PpFixedFormatType.ppFixedFormatTypePDF);

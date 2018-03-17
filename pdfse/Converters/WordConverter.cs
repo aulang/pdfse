@@ -19,11 +19,6 @@ namespace PDFService.Converters
                     throw new ConvertException("File not Exists");
                 }
 
-                //if (IsPasswordProtected(inputFile))
-                //{
-                //    throw new ConvertException("Password Exist");
-                //}
-
                 app = new Word.Application();
                 doc = app.Documents.Open(inputFile, false, true, false, nothing, nothing, true, nothing, nothing, nothing, nothing, false, false, nothing, true, nothing);
                 doc.ExportAsFixedFormat(outputFile, Word.WdExportFormat.wdExportFormatPDF, false, Word.WdExportOptimizeFor.wdExportOptimizeForOnScreen,
