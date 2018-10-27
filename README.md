@@ -1,6 +1,6 @@
 # PDFService
 Office格式文件（支持doc、docx、xls、xlsx、ppt、pptx）转换为PDF格式文件、PDF文件签名盖章服务。  
-PDF转换使用Office COM组件实现，兼容性号，PDF文件签名盖章基于iText7实现。
+PDF转换使用Office COM组件实现，兼容性好，PDF文件签名盖章基于iText7实现。
 
 ### 1. PDF转换
 1. 请求地址：/api/pdf/convert
