@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,15 +19,13 @@ namespace PDFService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-
-            services.Configure<FileLoaction>(Configuration.GetSection("FileLoaction"));
-            services.Configure<CertConfig>(Configuration.GetSection("CertConfig"));
-
-            services.AddSingleton(typeof(StamperManager));
-            services.AddSingleton(typeof(FileManager));
-
-            services.AddMvc();
+            services
+                .AddOptions()
+                .Configure<FileLoaction>(Configuration.GetSection("FileLoaction"))
+                .Configure<CertConfig>(Configuration.GetSection("CertConfig"))
+                .AddSingleton(typeof(StamperManager))
+                .AddSingleton(typeof(FileManager))
+                .AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +36,7 @@ namespace PDFService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

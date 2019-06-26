@@ -30,7 +30,11 @@ namespace PDFService.Utils
 
             document.Close();
 
-            PdfSigner signer = new PdfSigner(new PdfReader(input), new FileStream(output, FileMode.Create), append);
+            StampingProperties properties = new StampingProperties();
+
+            properties = append ? properties.UseAppendMode() : properties;
+
+            PdfSigner signer = new PdfSigner(new PdfReader(input), new FileStream(output, FileMode.Create), properties);
             signer.SetCertificationLevel(PdfSigner.CERTIFIED_NO_CHANGES_ALLOWED);
 
             PdfSignatureAppearance appearance = signer.GetSignatureAppearance();

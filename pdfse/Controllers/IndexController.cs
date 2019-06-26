@@ -6,7 +6,7 @@ namespace PDFService.Controllers
     public class IndexController : Controller
     {
         [HttpGet]
-        public string Get(int id)
+        public string Get()
         {
             return "PDF Service is running!";
         }

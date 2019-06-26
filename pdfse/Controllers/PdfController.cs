@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PDFService.Business;
-using System;
 using System.IO;
-using System.Web;
-using System.Threading.Tasks;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace PDFService.Controllers
 {
@@ -28,6 +27,14 @@ namespace PDFService.Controllers
             {
                 var fileName = HttpUtility.UrlDecode(file.FileName, utf8);
 
+                if (fileName.EndsWith(FileManager.PDF))
+                {
+                    using (var stream = file.OpenReadStream())
+                    {
+                        return File(stream, file.ContentType, file.FileName);
+                    }
+                }
+
                 var filePath = Manager.GetInputDocPath(fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -42,7 +49,9 @@ namespace PDFService.Controllers
                     filePath = Manager.Sign(filePath, flag);
                 }
 
-                return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath));
+                fileName = HttpUtility.UrlEncode(Path.GetFileName(filePath), utf8);
+
+                return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath), fileName);
             }
             catch
             {
