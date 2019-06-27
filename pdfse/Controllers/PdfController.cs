@@ -26,8 +26,9 @@ namespace PDFService.Controllers
             try
             {
                 var fileName = HttpUtility.UrlDecode(file.FileName, utf8);
+                var extension = Path.GetExtension(fileName).ToLower();
 
-                if (fileName.EndsWith(FileManager.PDF))
+                if (extension.EndsWith(FileManager.PDF))
                 {
                     using (var stream = file.OpenReadStream())
                     {
