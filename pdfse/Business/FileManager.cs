@@ -17,11 +17,11 @@ namespace PDFService.Business
 
         private static volatile int count = 0;
 
-        private StamperManager Stamper;
+        private readonly StamperManager stamper;
 
         public FileManager(StamperManager stamper)
         {
-            this.Stamper = stamper;
+            this.stamper = stamper;
         }
 
         private string GetParentDirectory(string path)
@@ -38,7 +38,7 @@ namespace PDFService.Business
 
             String today = DateTime.Now.ToString(DATEFORMAT);
 
-            StringBuilder builder = new StringBuilder(Stamper.OutBaseDir);
+            StringBuilder builder = new StringBuilder(stamper.OutBaseDir);
             builder.Append(Path.DirectorySeparatorChar).Append(today).Append(Path.DirectorySeparatorChar).Append(type);
 
             string parentDir = builder.ToString();
@@ -114,7 +114,7 @@ namespace PDFService.Business
             }
 
             string signedFilePath = GetSignedFilePath(input);
-            PdfUtil.Sign(input, signedFilePath, Stamper.Stamper, Stamper.PrivateKey, Stamper.Chain, flag);
+            PdfUtil.Sign(input, signedFilePath, stamper.Stamper, stamper.PrivateKey, stamper.Chain, flag);
             return signedFilePath;
         }
     }

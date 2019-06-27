@@ -11,13 +11,13 @@ namespace PDFService.Controllers
     [Route("api/[controller]")]
     public class PdfController : Controller
     {
-        private FileManager Manager;
+        private readonly FileManager manager;
 
-        private Encoding utf8 = Encoding.UTF8;
+        private readonly Encoding utf8 = Encoding.UTF8;
 
         public PdfController(FileManager manager)
         {
-            this.Manager = manager;
+            this.manager = manager;
         }
 
         [HttpPost("convert")]
@@ -33,18 +33,18 @@ namespace PDFService.Controllers
                     return File(file.OpenReadStream(), file.ContentType, HttpUtility.UrlEncode(fileName, utf8));
                 }
 
-                var filePath = Manager.GetInputDocPath(fileName);
+                var filePath = manager.GetInputDocPath(fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                filePath = Manager.Convert(filePath);
+                filePath = manager.Convert(filePath);
 
                 if (sign)
                 {
-                    filePath = Manager.Sign(filePath, flag);
+                    filePath = manager.Sign(filePath, flag);
                 }
 
                 fileName = HttpUtility.UrlEncode(Path.ChangeExtension(fileName, FileManager.PDF), utf8);
@@ -64,14 +64,14 @@ namespace PDFService.Controllers
             {
                 var fileName = HttpUtility.UrlDecode(file.FileName, utf8);
 
-                var filePath = Manager.GetInputPdfPath(fileName);
+                var filePath = manager.GetInputPdfPath(fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                filePath = Manager.Sign(filePath, flag);
+                filePath = manager.Sign(filePath, flag);
 
                 return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath));
             }

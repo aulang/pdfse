@@ -10,13 +10,13 @@ namespace PDFService.Business
 {
     public class StamperManager
     {
-        private string outBaseDir;
-        private ImageData stamper;
-        private ICipherParameters pk;
-        private X509Certificate[] chain;
+        private readonly string outBaseDir;
+        private readonly ImageData stamper;
+        private readonly ICipherParameters pk;
+        private readonly X509Certificate[] chain;
 
-        private FileLoaction fileLoaction;
-        private CertConfig certConfig;
+        private readonly FileLoaction fileLoaction;
+        private readonly CertConfig certConfig;
 
         public StamperManager(IOptions<FileLoaction> fileOptions, IOptions<CertConfig> certOption)
         {
