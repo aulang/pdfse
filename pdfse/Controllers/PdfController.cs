@@ -30,10 +30,7 @@ namespace PDFService.Controllers
 
                 if (extension.EndsWith(FileManager.PDF))
                 {
-                    using (var stream = file.OpenReadStream())
-                    {
-                        return File(stream, file.ContentType, file.FileName);
-                    }
+                    return File(file.OpenReadStream(), file.ContentType, HttpUtility.UrlEncode(fileName, utf8));
                 }
 
                 var filePath = Manager.GetInputDocPath(fileName);
@@ -50,7 +47,7 @@ namespace PDFService.Controllers
                     filePath = Manager.Sign(filePath, flag);
                 }
 
-                fileName = HttpUtility.UrlEncode(Path.GetFileName(filePath), utf8);
+                fileName = HttpUtility.UrlEncode(Path.ChangeExtension(fileName, FileManager.PDF), utf8);
 
                 return PhysicalFile(filePath, MimeMapping.GetMimeMapping(filePath), fileName);
             }
